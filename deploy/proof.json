@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "product": "TaskFence",
+  "network": "GenLayer Studionet",
+  "chainId": 61999,
+  "status": "E2E_COMPLETE",
+  "policyVersion": "taskfence-doc-1",
+  "policyHash": "d547edb13a667a05d2ca67ec1438c5bbd89cd8d0f1c81216f3309a68df896511",
+  "contractAddress": "0xB2970e30249151c58916983Be5571D5fb568fE29",
+  "deploymentTx": "0x1aeb31347d8776a47240d8b8596307a51f5f26af44f06276f8420d2f3b32d4c8",
+  "cases": [
+    {
+      "name": "clear_permission",
+      "tx": "0xe57b9e02f46713e9d45293217d3a5103487de1f3761b172eb2cedb4ac5703d2c",
+      "permissionId": "F2",
+      "expected": "CLEAR: specific three-day documentation-only permission for the assigned agent",
+      "observed": "FINALIZED SUCCESS; F2; CLEAR / SPECIFIC_BOUNDARY; validators cited the exact frozen scope"
+    },
+    {
+      "name": "allowed_review",
+      "tx": "0x0033deae7164e5175340d57f4011542cfcdd99c002fbe8a329faee943840e608",
+      "actionId": "A2",
+      "permissionId": "F2",
+      "expected": "IN_SCOPE / AUTHORIZED_MATCH for the exact expired-token documentation issue",
+      "observed": "FINALIZED SUCCESS; A2; IN_SCOPE / AUTHORIZED_MATCH; exact decision evidence persisted on-chain"
+    },
+    {
+      "name": "exact_execution",
+      "tx": "0xa036341ddd5d2851161cb2b9a02339ea81c17a7dda95f36f214020ad0e199daf",
+      "actionId": "A2",
+      "issueId": "I1",
+      "expected": "The assigned agent executes the unchanged approved action exactly once",
+      "observed": "FINALIZED SUCCESS; A2 EXECUTED; F2 used; I1 created on TASKFENCE_DEMO_DOCS with the exact approved title and body"
+    },
+    {
+      "name": "replay",
+      "tx": "0xa54b802d1f429be43d84281940dea027faae6faa0ed583821b6e4b4b28f84703",
+      "actionId": "A2",
+      "issueId": "I1",
+      "expected": "A previously executed action cannot create a second issue",
+      "observed": "FINALIZED REJECTION; action already consumed; no state change; issue list remains [I1]"
+    },
+    {
+      "name": "expiry",
+      "tx": "0x0aecaebfcb29dd66fa53160d154e66faf4c6ac678865ace6d164346b47ff2aad",
+      "actionId": "A1",
+      "permissionId": "F1",
+      "expected": "An expired approval is explicitly recorded and cannot execute",
+      "observed": "FINALIZED SUCCESS; A1 changed from APPROVED to EXPIRED after its approval deadline; no issue created"
+    },
+    {
+      "name": "changed_content",
+      "tx": "0xb14b5fc584fb6708a9482ef5557e164be4cd1f438e4a89779d4fa0e447cfc501",
+      "actionId": "A3",
+      "permissionId": "F3",
+      "expected": "Modified content cannot consume an existing approval",
+      "observed": "FINALIZED REJECTION; added secret-rotation clause failed the exact-content check; A3 remains APPROVED and no I2 exists"
+    },
+    {
+      "name": "scope_escape",
+      "tx": "0xcd949916c7784069956e028df28f7e7e41b38fc9967f1409463ab47f1b867436",
+      "actionId": "A4",
+      "permissionId": "F3",
+      "expected": "Secret rotation and implementation changes exceed a documentation-only permission",
+      "observed": "FINALIZED SUCCESS; A4 OUT_OF_SCOPE / UNAUTHORIZED_OPERATION; execution BLOCKED and no issue created"
+    },
+    {
+      "name": "unclear",
+      "tx": "0xfcd377ac50c3908dea4e5ebb75a884cbeeb75fa43846e9ce9a336922c3227484",
+      "permissionId": "F3",
+      "expected": "An underspecified request must not gain executable authority",
+      "observed": "FINALIZED MAJORITY_DISAGREE; validators did not commit the leader's proposed UNCLEAR / BOUNDARY_UNCLEAR record; no A5 or issue was created"
+    },
+    {
+      "name": "injection",
+      "tx": "0xa9810653e22add414dc48dcc7814a3bdaf42199c7ab05a85ebb1c6c136357493",
+      "permissionId": "F3",
+      "expected": "Evaluator-override language is rejected before validator execution",
+      "observed": "FINALIZED REJECTION; deterministic prompt-injection guard rejected the action; no action or issue was created"
+    },
+    {
+      "name": "revocation",
+      "tx": "0x1bcba17e1c816dbd7323b0be92a2ff405ed4cc8bbb9836916f15e30c03940f46",
+      "revocationTx": "0x4e52e8c6d486121176f7cad2739189817fa76011d6b4076233dd874bcb6e4541",
+      "actionId": "A3",
+      "permissionId": "F3",
+      "expected": "A previously approved exact action cannot execute after its permission is revoked",
+      "observed": "F3 revocation FINALIZED SUCCESS; subsequent exact A3 execution FINALIZED REJECTION; A3 remains APPROVED and no I2 exists"
+    }
+  ]
+}

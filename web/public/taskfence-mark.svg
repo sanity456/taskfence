@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="TaskFence">
+  <rect width="128" height="128" rx="28" fill="#20231f"/>
+  <path d="M28 37h72M28 64h72M28 91h72M42 24v80M86 24v80" fill="none" stroke="#d9ff5b" stroke-width="9" stroke-linecap="round"/>
+  <path d="M64 48l14 8v16c0 11-6 20-14 24-8-4-14-13-14-24V56z" fill="#f1efe8" stroke="#20231f" stroke-width="4"/>
+  <path d="M58 69l5 5 9-11" fill="none" stroke="#e7552c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

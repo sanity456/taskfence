@@ -1,0 +1,7 @@
+{
+  "network": "GenLayer Studionet",
+  "chainId": 61999,
+  "contractAddress": "0xB2970e30249151c58916983Be5571D5fb568fE29",
+  "deploymentTx": "0x1aeb31347d8776a47240d8b8596307a51f5f26af44f06276f8420d2f3b32d4c8",
+  "status": "DEPLOYED"
+}
