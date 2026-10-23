@@ -58,9 +58,16 @@ function renderActionCards() {
   return state.actions.slice().reverse().map(action => {
     const assignedAgent = sameAddress(state.account, action.agent);
     const approvalExpired = action.status === 'APPROVED' && Date.now() / 1000 > action.approval_expires_at;
-    const mayExecute = action.status === 'APPROVED' && !approvalExpired && assignedAgent;
+    const permission = state.permissions.find(item => item.id === action.permission_id);
+    const permissionUnavailable = !permission || permission.revoked || permission.used || Date.now() / 1000 > permission.expires_at;
+    const mayExecute = action.status === 'APPROVED' && !approvalExpired && assignedAgent && !permissionUnavailable;
     const mayExpire = action.status === 'APPROVED' && approvalExpired;
     const mayReplay = action.status === 'EXECUTED' && assignedAgent;
+    const unavailableReason = !permission ? 'Permission details unavailable; refresh before executing.'
+      : permission.revoked ? 'Execution disabled: this permission was revoked.'
+      : permission.used ? 'Execution disabled: this permission was already used.'
+      : Date.now() / 1000 > permission.expires_at ? 'Execution disabled: this permission has expired.'
+      : approvalExpired ? 'Execution disabled: this approval has expired.' : '';
     return `<article class="record action-record">
       <div class="record-head"><span class="mono">${esc(action.id)} · ${esc(action.permission_id)}</span><span class="status ${statusTone(action.verdict)}">${esc(action.verdict)}</span></div>
       <h3>${esc(action.title)}</h3><p>${esc(action.body)}</p>
@@ -70,6 +77,7 @@ function renderActionCards() {
       ${mayExecute ? `<button class="text-button danger" data-action="qa-changed" data-id="${esc(action.id)}">Test changed content · expected reject</button>` : ''}
       ${mayReplay ? `<button class="text-button danger" data-action="qa-replay" data-id="${esc(action.id)}">Test replay · expected reject</button>` : ''}
       ${mayExpire ? `<button class="text-button danger" data-action="expire" data-id="${esc(action.id)}">Record expired approval</button>` : ''}
+      ${action.status === 'APPROVED' && assignedAgent && unavailableReason ? `<p class="execution-note">${esc(unavailableReason)}</p>` : ''}
       ${action.issue_id ? `<a class="issue-link" href="#issues">Created ${esc(action.issue_id)} on the demo board ↓</a>` : ''}
     </article>`;
   }).join('');

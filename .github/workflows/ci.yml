@@ -17,5 +17,8 @@ jobs:
       - run: npm ci
       - run: pip install -r requirements-dev.txt
       - run: npm run build
-      - run: pytest tests/direct -q
+      - name: Run direct tests with the supported GenVM runtime
+        run: pytest tests/direct -q
+        env:
+          GENVM_VERSION: v0.2.16
       - run: npm run verify:proof
